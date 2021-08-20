@@ -13,6 +13,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   File _image;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,14 +27,19 @@ class _MyAppState extends State<MyApp> {
               children: <Widget>[
                 FlatButton(
                   color: Colors.accents[2],
-                  onPressed: () {},
+                  onPressed: () {
+                    getImage(ImageSource.camera);
+                  },
                   child: Text('Camera'),
                 ),
                 FlatButton(
                   color: Colors.accents[5],
-                  onPressed: () {},
+                  onPressed: () {
+                    getImage(ImageSource.gallery);
+                  },
                   child: Text('Gallery'),
-                )
+                ),
+                showImage()
               ],
             ),
           ),
@@ -41,8 +47,15 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+  Widget showImage() {
+    if (_image == null)
+      return Container();
+    else
+      return Image.file(_image);
+  }
+
+  Future getImage(ImageSource imageSource) async {
+    var image = await ImagePicker.pickImage(source: imageSource);
 
     setState(() {
       _image = image;
